@@ -22,4 +22,4 @@ def doctors_all_or_by_specialty(specialty):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
