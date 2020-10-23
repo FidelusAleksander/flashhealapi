@@ -1,5 +1,4 @@
 import pyodbc
-import json
 
 class SqlReader:
     def __init__(self, config):
