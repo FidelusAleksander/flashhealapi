@@ -19,7 +19,7 @@ reader = SqlReader(db_config)
 @app.route('/doctors/<string:specialty>',methods = ['GET'])
 def doctors_all_or_by_specialty(specialty):
     try:
-        return {"results with reader": specialty}
+        return {"results with reader uncommented": specialty}
     except Exception as e:
         return {"exception" : str(e)}
 
