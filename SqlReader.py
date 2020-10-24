@@ -14,10 +14,10 @@ class SqlReader:
         return connection
 
     def fetch(self, specialty):
-        # if specialty != 'all':
-        #     query = f"SELECT * FROM dbo.doctors WHERE specialty = '{specialty}'"
-        # else:
-        query = "SELECT * FROM dbo.doctors"
+        if specialty != 'all':
+            query = f"SELECT * FROM dbo.doctors WHERE specialty = '{specialty}'"
+        else:
+            query = "SELECT * FROM dbo.doctors"
 
         cursor = None
         conn = None
