@@ -1,8 +1,7 @@
 from flask import Flask
 from flask_restful import Api
 import simplejson as json
-import pyodbc
-# from SqlReader import SqlReader
+from SqlReader import SqlReader
 
 
 
@@ -11,6 +10,8 @@ with open('db_config.json') as config_file:
     db_config = json.loads(conf_str)
 
 app = Flask(__name__)
+
+reader = SqlReader(db_config)
 # api = Api(app)
 
 
@@ -18,7 +19,7 @@ app = Flask(__name__)
 @app.route('/doctors/<string:specialty>',methods = ['GET'])
 def doctors_all_or_by_specialty(specialty):
     try:
-        return {"results with pyodbc": specialty}
+        return {"results with reader": specialty}
     except Exception as e:
         return {"exception" : str(e)}
 
