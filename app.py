@@ -4,12 +4,12 @@ import simplejson as json
 # from SqlReader import SqlReader
 
 
-with open('db_config.json') as config_file:
-    conf_str = config_file.read()
-    db_config = json.loads(conf_str)
+# with open('db_config.json') as config_file:
+#     conf_str = config_file.read()
+#     db_config = json.loads(conf_str)
 
 app = Flask(__name__)
-api = Api(app)
+# api = Api(app)
 
 # reader = SqlReader(db_config)
 
