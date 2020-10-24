@@ -19,7 +19,8 @@ reader = SqlReader(db_config)
 @app.route('/doctors/<string:specialty>',methods = ['GET'])
 def doctors_all_or_by_specialty(specialty):
     try:
-        return {"results with reader uncommented": specialty}
+        results = reader.fetch(specialty)
+        return json.dumps(results, use_decimal=True)
     except Exception as e:
         return {"exception" : str(e)}
 
