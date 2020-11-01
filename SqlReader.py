@@ -13,7 +13,7 @@ class SqlReader:
         connection = pyodbc.connect(self.connstring)
         return connection
 
-    def fetch(self, specialty):
+    def fetch_doctors(self, specialty):
         if specialty != 'all':
             query = f"SELECT * FROM dbo.doctors WHERE specialty = '{specialty}'"
         else:
@@ -33,6 +33,34 @@ class SqlReader:
 
             for row in cursor.fetchall():
                 result.append(dict(zip(columns, row)))
+
+        except Exception as e:
+            raise e
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
+
+        return result
+
+    def fetch_doctor_details(self, doctor_id):
+        query = f"SELECT * FROM dbo.doctor_reviews_score({doctor_id})"
+
+        cursor = None
+        conn = None
+
+        result = {}
+
+        try:
+            conn = self.connection()
+            cursor = conn.cursor()
+            cursor.execute(query)
+
+            columns = [column[0] for column in cursor.description]
+
+            for row in cursor.fetchall():
+                result = dict(zip(columns, row))
 
         except Exception as e:
             raise e
