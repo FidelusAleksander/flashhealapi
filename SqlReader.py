@@ -14,10 +14,25 @@ class SqlReader:
         return connection
 
     def fetch_doctors(self, specialty):
+        query = '''WITH  reviews as (
+            SELECT 
+                doctor_id, 
+                ROUND(AVG(CAST(star_rating AS FLOAT)), 1) as avg_review,
+                COUNT(star_rating) as review_count
+                FROM doctor_reviews GROUP BY doctor_id
+            )
+            
+            SELECT d.*, 
+            ISNULL(r.avg_review, 0) as avg_review , 
+            ISNULL(r.review_count, 0) as reviews_count
+            FROM dbo.doctors as d
+            LEFT JOIN
+            reviews as r
+            ON d.doctor_id = r.doctor_id
+        '''
+
         if specialty != 'all':
-            query = f"SELECT * FROM dbo.doctors WHERE specialty = '{specialty}'"
-        else:
-            query = "SELECT * FROM dbo.doctors"
+            query += f" WHERE specialty = '{specialty}'"
 
         cursor = None
         conn = None
