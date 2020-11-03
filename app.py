@@ -29,4 +29,4 @@ def doctor_details_by_id(doctor_id):
         return {"Failed, message:" : str(e)}
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run()
