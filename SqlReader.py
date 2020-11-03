@@ -60,12 +60,12 @@ class SqlReader:
         return result
 
     def fetch_doctor_details(self, doctor_id):
-        query = f"SELECT * FROM dbo.doctor_reviews_score({doctor_id})"
+        query = f"SELECT * FROM dbo.doctor_reviews_by_id({doctor_id})"
 
         cursor = None
         conn = None
 
-        result = {}
+        result = []
 
         try:
             conn = self.connection()
@@ -75,7 +75,7 @@ class SqlReader:
             columns = [column[0] for column in cursor.description]
 
             for row in cursor.fetchall():
-                result = dict(zip(columns, row))
+                result.append(dict(zip(columns, row)))
 
         except Exception as e:
             raise e
