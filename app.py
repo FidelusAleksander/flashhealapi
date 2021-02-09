@@ -1,22 +1,15 @@
 from flask import Flask
 import simplejson as json
 from SqlReader import SqlReader
-import os
 
-with open('db_config.json') as config_file:
+
+with open('config.json') as config_file:
     conf_str = config_file.read()
-    db_config = json.loads(conf_str)
-
-try:
-    with open('config.json') as config_file:
-        conf_str = config_file.read()
-        config = json.loads(conf_str)
-except Exception as e:
-    config = "Failed to load config.json -> " + str(e)
+    conf = json.loads(conf_str)
 
 app = Flask(__name__)
 
-reader = SqlReader(db_config)
+reader = SqlReader(conf['SQL_DATABASE'])
 
 @app.route('/doctors/', defaults={'specialty': 'all'})
 @app.route('/doctors/<string:specialty>',methods = ['GET'])
@@ -35,13 +28,6 @@ def doctor_details_by_id(doctor_id):
     except Exception as e:
         return {"Failed, message:" : str(e)}
 
-@app.route('/config/',methods = ['GET'])
-def test_config():
-    return str(config)
-
-@app.route('/environ/',methods = ['GET'])
-def test_environ():
-    return str(os.environ)
 
 if __name__ == "__main__":
     app.run()
