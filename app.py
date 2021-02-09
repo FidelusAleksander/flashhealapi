@@ -7,6 +7,10 @@ with open('db_config.json') as config_file:
     conf_str = config_file.read()
     db_config = json.loads(conf_str)
 
+with open('config.json') as config_file:
+    conf_str = config_file.read()
+    config = json.loads(conf_str)
+
 app = Flask(__name__)
 
 reader = SqlReader(db_config)
@@ -27,6 +31,10 @@ def doctor_details_by_id(doctor_id):
         return json.dumps(results, use_decimal=True)
     except Exception as e:
         return {"Failed, message:" : str(e)}
+
+@app.route('/test/',methods = ['GET'])
+def test_method():
+    return str(config) + "from config.json"
 
 if __name__ == "__main__":
     app.run()
