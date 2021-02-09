@@ -1,6 +1,0 @@
-{
-    "sqlserver": "flashheal-dev.database.windows.net",
-    "database": "masterdata",
-    "user": "flashheal",
-    "password": "A1123581321a"
-}
