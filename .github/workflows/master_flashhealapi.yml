@@ -1,0 +1,35 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy container app to Azure Web App - flashhealapi
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+    - uses: actions/checkout@master
+
+    - uses: azure/docker-login@v1
+      with:
+        login-server: https://flashhealacr.azurecr.io/
+        username: ${{ secrets.AzureAppService_ContainerUsername_6a9e7ee3a3bf44bc96816c0e517082cb }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_4a4fbf8bb82045ba81d4a569464d8155 }}
+
+    - run: |
+        docker build . -t flashhealacr.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_6a9e7ee3a3bf44bc96816c0e517082cb }}/flash-heal-api:${{ github.sha }}
+        docker push flashhealacr.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_6a9e7ee3a3bf44bc96816c0e517082cb }}/flash-heal-api:${{ github.sha }}
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'flashhealapi'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_260055814ce44b3da73ed62b922a66a9 }}
+        images: 'flashhealacr.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_6a9e7ee3a3bf44bc96816c0e517082cb }}/flash-heal-api:${{ github.sha }}'
