@@ -12,4 +12,5 @@ COPY app.py .
 COPY entrypoint.sh .
 COPY config.tmpl .
 EXPOSE "5000/tcp"
+RUN ["chmod", "+x", "entrypoint.sh"]
 ENTRYPOINT ["./entrypoint.sh"]
