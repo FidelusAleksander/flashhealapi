@@ -11,6 +11,7 @@ class SqlReader:
 
     def connection(self):
         connection = pyodbc.connect(self.connstring)
+        print(self.connstring)
         return connection
 
     def fetch_doctors(self, specialty):
