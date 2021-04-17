@@ -7,10 +7,9 @@ ENV PATH="$PATH:/opt/mssql-tools/bin"
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-COPY SqlReader.py .
+COPY batch/ ./batch/
 COPY app.py .
 COPY entrypoint.sh .
 COPY config.tmpl .
 EXPOSE "5000/tcp"
-RUN ["chmod", "+x", "entrypoint.sh"]
 ENTRYPOINT ["./entrypoint.sh"]

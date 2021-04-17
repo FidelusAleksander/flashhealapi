@@ -18,7 +18,8 @@ class DoctorModel(db.Model):
         self.longtitude = longtitude
 
     def json(self):
-        return {"first_name": self.first_name,
+        return {"doctor_id": self.doctor_id,
+                "first_name": self.first_name,
                 "last_name": self.last_name,
                 "specialty": self.specialty,
                 "latitude": self.latitude,
