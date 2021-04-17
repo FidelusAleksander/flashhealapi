@@ -1,33 +1,13 @@
 from flask import Flask
-import simplejson as json
-from SqlReader import SqlReader
-
-with open('config.json') as config_file:
-    conf_str = config_file.read()
-    conf = json.loads(conf_str)
+from flask_restful import Api
+from batch.db import db
+from batch.resources.Doctor import DoctorList, Doctor
+from batch.utils.utils import get_database_connection_string
 
 app = Flask(__name__)
-
-reader = SqlReader(conf['SQL_DATABASE'])
-
-
-@app.route('/doctors/', defaults={'specialty': 'all'})
-@app.route('/doctors/<string:specialty>', methods=['GET'])
-def doctors_all_or_by_specialty(specialty):
-    try:
-        results = reader.fetch_doctors(specialty)
-        return json.dumps(results, use_decimal=True)
-    except Exception as e:
-        return {"Failed, message:": str(e)}
-
-
-@app.route('/doctorDetails/<int:doctor_id>', methods=['GET'])
-def doctor_details_by_id(doctor_id):
-    try:
-        results = reader.fetch_doctor_details(doctor_id)
-        return json.dumps(results, use_decimal=True)
-    except Exception as e:
-        return {"Failed, message:": str(e)}
+api = Api(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = get_database_connection_string()
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 @app.route('/')
@@ -35,5 +15,9 @@ def index():
     return "Flashhealapi main page"
 
 
+api.add_resource(Doctor, '/doctor')
+api.add_resource(DoctorList, '/doctors')
+
 if __name__ == "__main__":
+    db.init_app(app)
     app.run(host='0.0.0.0', port=5000)
