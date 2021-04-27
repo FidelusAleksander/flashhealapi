@@ -26,5 +26,9 @@ class DoctorModel(db.Model):
                 "longtitude": self.longtitude}
 
     @classmethod
-    def find_by_id(cls, doctor_id):
+    def find_by_doctor_id(cls, doctor_id):
         return cls.query.filter_by(doctor_id=doctor_id).first()
+
+    def insert_to_db(self):
+        db.session.add(self)
+        db.session.commit()
