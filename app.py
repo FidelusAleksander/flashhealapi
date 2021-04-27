@@ -3,6 +3,8 @@ from flask_restful import Api
 from batch.db import db
 from batch.resources.Doctor import DoctorList, Doctor
 from batch.utils.utils import get_database_connection_string
+from batch.resources.DoctorReview import DoctorReview
+
 
 app = Flask(__name__)
 api = Api(app)
@@ -17,6 +19,7 @@ def index():
 
 api.add_resource(Doctor, '/doctor')
 api.add_resource(DoctorList, '/doctors')
+api.add_resource(DoctorReview, '/doctor-review/<int:doctor_id>')
 
 if __name__ == "__main__":
     db.init_app(app)
