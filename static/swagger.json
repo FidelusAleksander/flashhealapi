@@ -22,7 +22,7 @@
     }
   ],
   "paths": {
-    "/doctors": {
+    "/doctor-list": {
       "get": {
         "tags": [
           "doctor"
