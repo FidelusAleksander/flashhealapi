@@ -11,5 +11,6 @@ COPY batch/ ./batch/
 COPY app.py .
 COPY entrypoint.sh .
 COPY config.tmpl .
+COPY static/ ./static/
 EXPOSE "5000/tcp"
 ENTRYPOINT ["./entrypoint.sh"]

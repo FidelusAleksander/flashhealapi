@@ -1,0 +1,284 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "FlashHeal API",
+    "description": "API developed by https://github.com/FidelusAleksander/ for mobile app project purposes",
+    "contact": {
+      "name": "Aleksander Fidelus",
+      "email": "alek.fidelus@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "doctor"
+    },
+    {
+      "name": "doctor-review"
+    }
+  ],
+  "paths": {
+    "/doctors": {
+      "get": {
+        "tags": [
+          "doctor"
+        ],
+        "summary": "searches for registered doctors",
+        "description": "Search for all registered doctors\n",
+        "operationId": "getDoctors",
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Doctor"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "internal server error"
+          }
+        }
+      }
+    },
+    "/doctor": {
+      "post": {
+        "tags": [
+          "doctor"
+        ],
+        "summary": "register a doctor",
+        "description": "Registers a doctor in the database",
+        "operationId": "registerDoctor",
+        "requestBody": {
+          "description": "Doctor to register",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DoctorRegister"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "doctor registered"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "500": {
+            "description": "internal server error"
+          }
+        }
+      }
+    },
+    "/doctor-review/{doctor_id}": {
+      "get": {
+        "tags": [
+          "doctor-review"
+        ],
+        "summary": "review a doctor",
+        "description": "Searches for all doctor-reviews with specified doctor_id",
+        "operationId": "getDoctorReviews",
+        "parameters": [
+          {
+            "name": "doctor_id",
+            "in": "path",
+            "description": "Numeric ID of the doctor to find reviews for",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DoctorReview"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "internal server error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "doctor-review"
+        ],
+        "summary": "review a doctor",
+        "description": "Adds a doctor-review to the database",
+        "operationId": "reviewDoctor",
+        "parameters": [
+          {
+            "name": "doctor_id",
+            "in": "path",
+            "description": "Numeric ID of the doctor to review",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Doctor to register",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DoctorReviewAdd"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "review registered"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Doctor": {
+        "type": "object",
+        "properties": {
+          "doctor_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "first_name": {
+            "type": "string",
+            "example": "Aleksander"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Fidelus"
+          },
+          "specialty": {
+            "type": "string",
+            "example": "Dentist"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "float",
+            "example": 49.773609
+          },
+          "longtitude": {
+            "type": "number",
+            "format": "float",
+            "example": 19.597491
+          }
+        }
+      },
+      "DoctorRegister": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "example": "Aleksander"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Fidelus"
+          },
+          "specialty": {
+            "type": "string",
+            "example": "Dentist"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "float",
+            "example": 49.773609
+          },
+          "longtitude": {
+            "type": "number",
+            "format": "float",
+            "example": 19.597491
+          }
+        }
+      },
+      "DoctorReview": {
+        "type": "object",
+        "properties": {
+          "doctor_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "review_id": {
+            "type": "integer",
+            "example": 46
+          },
+          "star_rating": {
+            "type": "integer",
+            "example": 2,
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          "creation_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reviewer": {
+            "type": "string",
+            "example": "Marcin"
+          },
+          "opinion": {
+            "type": "string",
+            "example": "I'm not satisfied after my appointment"
+          }
+        }
+      },
+      "DoctorReviewAdd": {
+        "type": "object",
+        "properties": {
+          "star_rating": {
+            "type": "integer",
+            "example": 2,
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          "reviewer": {
+            "type": "string",
+            "example": "Marcin"
+          },
+          "opinion": {
+            "type": "string",
+            "example": "I'm not satisfied after my appointment"
+          }
+        }
+      }
+    }
+  }
+}
