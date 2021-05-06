@@ -2,12 +2,6 @@ from batch.models.DoctorModel import DoctorModel
 from flask_restful import Resource, reqparse
 
 
-class DoctorList(Resource):
-    def get(self):
-        doctors = [doctor.json() for doctor in DoctorModel.query.all()]
-        return doctors
-
-
 class Doctor(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('first_name',
@@ -40,3 +34,29 @@ class Doctor(Resource):
             return {"message": "An error occurred when inserting doctor."}, 500
 
         return doctor.json(), 201
+
+    def get(self, doctor_id=None):
+        """
+        Retrieves DoctorModel objects in json form from the database.
+        :param doctor_id: id of the doctor to retrieve (will retrieve list of all doctors if None)
+        :return: single/list of json DoctorModel objects
+        """
+
+        if doctor_id:
+            try:
+                doctor = DoctorModel.query.filter_by(doctor_id=doctor_id).first()
+            except:
+                return {"message": "An error occurred when retrieving doctor."}, 500
+
+            if not doctor:
+                return {"message": f"There isn't a doctor with id = {doctor_id}"}, 404
+
+            return doctor.json(), 200
+
+        else:
+            try:
+                doctors = [doctor.json() for doctor in DoctorModel.query.all()]
+            except:
+                return {"message": "An error occurred when retrieving doctors."}, 500
+
+            return doctors, 200

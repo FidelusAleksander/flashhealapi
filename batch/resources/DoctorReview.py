@@ -37,4 +37,4 @@ class DoctorReview(Resource):
         if reviews:
             return [review.json() for review in reviews], 200
 
-        return [], 204
+        return [], 200
