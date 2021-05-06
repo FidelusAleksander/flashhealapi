@@ -4,7 +4,7 @@ from batch.db import db
 from batch.resources.Doctor import Doctor
 from batch.utils.utils import get_database_connection_string
 from batch.resources.DoctorReview import DoctorReview
-from batch.resources.DoctorMarker import DoctorMarkerList
+from batch.resources.DoctorMarker import DoctorSummary
 from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask(__name__)
@@ -40,7 +40,7 @@ app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 api.add_resource(Doctor, '/doctors', '/doctors/<int:doctor_id>')
 api.add_resource(DoctorReview, '/doctor-reviews/<int:doctor_id>')
-api.add_resource(DoctorMarkerList, '/doctor-markers')
+api.add_resource(DoctorSummary, '/doctor-summaries')
 
 if __name__ == "__main__":
     db.init_app(app)

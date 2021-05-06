@@ -5,23 +5,25 @@ from batch.db import db
 from sqlalchemy.types import Float
 
 
-class DoctorMarkerList(Resource):
+class DoctorSummary(Resource):
     def get(self):
         try:
             reviews = db.session.query(DoctorReviewModel.doctor_id,
                                        db.func.round(db.func.avg(db.func.cast(DoctorReviewModel.star_rating, Float)), 1).label('avg_review'),
                                        db.func.count(DoctorReviewModel.star_rating).label('review_count'),
-                                       )\
-                .group_by(DoctorReviewModel.doctor_id).subquery()
+                                       ).group_by(DoctorReviewModel.doctor_id).subquery()
             results = db.session.query(DoctorModel, reviews).outerjoin(reviews, DoctorModel.doctor_id == reviews.c.doctor_id).all()
-            markers = []
-            for marker in results:
-                new_marker = marker.DoctorModel.json()
-                new_marker['avg_review'] = marker.avg_review if marker.avg_review else 0
-                new_marker['review_count'] = marker.review_count if marker.review_count else 0
-                markers.append(new_marker)
-
-            return markers, 200
-
         except:
-            return {"message": "An error occurred while retrieving DoctorMarkers."}, 500
+            return {"message": "An error occurred while retrieving DoctorSummaries."}, 500
+
+        summaries = [self.combine(result.DoctorModel, result.avg_review, result.review_count) for result in results]
+
+        return summaries, 200
+
+
+
+    def combine(self, doctor, avg_review, review_count):
+        summary = doctor.json()
+        summary['avg_review'] = avg_review if avg_review else 0
+        summary['review_count'] = review_count if review_count else 0
+        return summary

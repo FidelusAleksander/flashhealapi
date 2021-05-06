@@ -17,6 +17,8 @@
     "name" : "doctors"
   }, {
     "name" : "doctor-reviews"
+  }, {
+    "name" : "doctor-summaries"
   } ],
   "paths" : {
     "/doctors" : {
@@ -184,6 +186,32 @@
           }
         }
       }
+    },
+    "/doctor-summaries" : {
+      "get" : {
+        "tags" : [ "doctor-summaries" ],
+        "summary" : "retrieve summaries for all registered doctors",
+        "description" : "Search for summaries of all registered doctors\n",
+        "operationId" : "getDoctorSummaries",
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/DoctorSummary"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "internal server error"
+          }
+        }
+      }
     }
   },
   "components" : {
@@ -291,6 +319,46 @@
           "opinion" : {
             "type" : "string",
             "example" : "I'm not satisfied after my appointment"
+          }
+        }
+      },
+      "DoctorSummary" : {
+        "type" : "object",
+        "properties" : {
+          "doctor_id" : {
+            "type" : "integer",
+            "example" : 1
+          },
+          "first_name" : {
+            "type" : "string",
+            "example" : "Aleksander"
+          },
+          "last_name" : {
+            "type" : "string",
+            "example" : "Fidelus"
+          },
+          "specialty" : {
+            "type" : "string",
+            "example" : "Dentist"
+          },
+          "latitude" : {
+            "type" : "number",
+            "format" : "float",
+            "example" : 49.773609
+          },
+          "longtitude" : {
+            "type" : "number",
+            "format" : "float",
+            "example" : 19.597491
+          },
+          "avg_review" : {
+            "type" : "number",
+            "format" : "float",
+            "example" : 4.3
+          },
+          "review_count" : {
+            "type" : "integer",
+            "example" : 32
           }
         }
       }
