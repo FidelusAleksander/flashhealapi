@@ -4,7 +4,7 @@ from batch.db import db
 from batch.resources.Doctor import Doctor
 from batch.utils.utils import get_database_connection_string
 from batch.resources.DoctorReview import DoctorReview
-from batch.resources.DoctorMarker import DoctorSummary
+from batch.resources.DoctorSummary import DoctorSummary
 from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask(__name__)

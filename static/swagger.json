@@ -356,7 +356,7 @@
             "format" : "float",
             "example" : 4.3
           },
-          "review_count" : {
+          "reviews_count" : {
             "type" : "integer",
             "example" : 32
           }
