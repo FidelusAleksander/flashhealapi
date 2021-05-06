@@ -1,7 +1,7 @@
 from flask import Flask, send_from_directory
 from flask_restful import Api
 from batch.db import db
-from batch.resources.Doctor import DoctorList, Doctor
+from batch.resources.Doctor import Doctor
 from batch.utils.utils import get_database_connection_string
 from batch.resources.DoctorReview import DoctorReview
 from batch.resources.DoctorMarker import DoctorMarkerList
@@ -21,6 +21,10 @@ def send_static(path):
 def index():
     return "FlashHeal API main page"
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory('static', 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 
 SWAGGER_URL = '/api'
 API_URL = '/static/swagger.json'
@@ -34,9 +38,8 @@ swaggerui_blueprint = get_swaggerui_blueprint(
 
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
-api.add_resource(Doctor, '/doctor')
-api.add_resource(DoctorList, '/doctors')
-api.add_resource(DoctorReview, '/doctor-review/<int:doctor_id>')
+api.add_resource(Doctor, '/doctors', '/doctors/<int:doctor_id>')
+api.add_resource(DoctorReview, '/doctor-reviews/<int:doctor_id>')
 api.add_resource(DoctorMarkerList, '/doctor-markers')
 
 if __name__ == "__main__":
