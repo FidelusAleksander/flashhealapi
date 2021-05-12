@@ -39,7 +39,7 @@ swaggerui_blueprint = get_swaggerui_blueprint(
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 api.add_resource(Doctor, '/doctors', '/doctors/<int:doctor_id>')
-api.add_resource(DoctorReview, '/doctor-reviews/<int:doctor_id>')
+api.add_resource(DoctorReview, '/doctor-reviews/<int:doctor_id>', '/doctor-reviews/<int:doctor_id>/<int:review_id>')
 api.add_resource(DoctorSummary, '/doctor-summaries')
 
 if __name__ == "__main__":
