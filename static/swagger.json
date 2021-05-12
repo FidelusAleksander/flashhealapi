@@ -157,7 +157,7 @@
       "post" : {
         "tags" : [ "doctor-reviews" ],
         "summary" : "review a doctor",
-        "description" : "Adds a doctor-review to the database",
+        "description" : "Adds a doctor-review",
         "operationId" : "reviewDoctor",
         "parameters" : [ {
           "name" : "doctor_id",
@@ -171,7 +171,7 @@
           }
         } ],
         "requestBody" : {
-          "description" : "Doctor to register",
+          "description" : "review to submit",
           "content" : {
             "application/json" : {
               "schema" : {
@@ -183,6 +183,155 @@
         "responses" : {
           "201" : {
             "description" : "review registered"
+          },
+          "400" : {
+            "description" : "bad request"
+          },
+          "500" : {
+            "description" : "internal server error"
+          }
+        }
+      }
+    },
+    "/doctor-reviews/{doctor_id}/{review_id}" : {
+      "get" : {
+        "tags" : [ "doctor-reviews" ],
+        "summary" : "retrieve single review",
+        "description" : "Searches for a single doctor-review with specified doctor_id and review_id",
+        "operationId" : "getDoctorReview",
+        "parameters" : [ {
+          "name" : "doctor_id",
+          "in" : "path",
+          "description" : "Numeric ID of the doctor to find reviews for",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "name" : "review_id",
+          "in" : "path",
+          "description" : "Numeric ID of the specific review",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DoctorReview"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "resource not found"
+          },
+          "500" : {
+            "description" : "internal server error"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "doctor-reviews" ],
+        "summary" : "delete single review",
+        "description" : "Deletes a single doctor-review with specified doctor_id and review_id",
+        "operationId" : "deleteDoctorReview",
+        "parameters" : [ {
+          "name" : "doctor_id",
+          "in" : "path",
+          "description" : "Numeric ID of the doctor to find reviews for",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "name" : "review_id",
+          "in" : "path",
+          "description" : "Numeric ID of the specific ID",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "resource successfully deleted"
+          },
+          "404" : {
+            "description" : "resource not found"
+          },
+          "500" : {
+            "description" : "internal server error"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "doctor-reviews" ],
+        "summary" : "edit single review",
+        "description" : "Edits a single doctor-review with specified doctor_id and review_id",
+        "operationId" : "editDoctorReview",
+        "parameters" : [ {
+          "name" : "doctor_id",
+          "in" : "path",
+          "description" : "Numeric ID of the doctor to find reviews for",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "name" : "review_id",
+          "in" : "path",
+          "description" : "Numeric ID of the specific ID",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "new review data",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Review"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "review successfully edited",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DoctorReview"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad request"
+          },
+          "404" : {
+            "description" : "resource not found"
+          },
+          "500" : {
+            "description" : "internal server error"
           }
         }
       }
@@ -356,7 +505,7 @@
             "format" : "float",
             "example" : 4.3
           },
-          "reviews_count" : {
+          "review_count" : {
             "type" : "integer",
             "example" : 32
           }

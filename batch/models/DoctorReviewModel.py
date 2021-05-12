@@ -29,6 +29,17 @@ class DoctorReviewModel(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def remove_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
+
     @classmethod
     def find_by_doctor_id(cls, doctor_id):
         return cls.query.filter_by(doctor_id=doctor_id).all()
+
+    def update(self, star_rating, reviewer, opinion):
+        self.star_rating = star_rating
+        self.reviewer = reviewer
+        self.opinion = opinion
+        db.session.commit()
+
