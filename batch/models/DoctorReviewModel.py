@@ -1,5 +1,6 @@
 from batch.db import db
 from datetime import datetime
+import json
 
 class DoctorReviewModel(db.Model):
 
